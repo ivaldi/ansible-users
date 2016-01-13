@@ -1,0 +1,13 @@
+---
+- include: linux.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+- include: openbsd.yml
+  when: ansible_distribution == 'OpenBSD'
+
+- name: add authorized keys
+  authorized_key:
+    key: '{{ item.1 }}'
+    user: '{{ item.0.name }}'
+  with_subelements:
+    - users
+    - ssh_keys
