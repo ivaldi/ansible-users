@@ -22,3 +22,8 @@
     dest: /home/{{ item.name }}/.profile
     line: 'export HISTFILE="$HOME/.sh_history"'
   with_items: users
+- name: alias vi to vim
+  lineinfile:
+    dest: /home/{{ item.name }}/.profile
+    line: alias vi=vim
+  with_items: users
