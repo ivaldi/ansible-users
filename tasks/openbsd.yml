@@ -5,7 +5,7 @@
     shell: /bin/ksh
     password: '{{ item.password_bcrypt|default(omit) }}'
     groups: '{{ item.groups_openbsd|default(omit) }}'
-  with_items: users
+  with_items: '{{ users }}'
 - name: give doas permissions to group wheel
   lineinfile:
     dest: /etc/doas.conf
@@ -16,14 +16,14 @@
   lineinfile:
     dest: /home/{{ item.name }}/.profile
     line: 'export PS1="\u@\h:\w\$ "'
-  with_items: users
+  with_items: '{{ users }}'
 - name: set HISTFILE shell preference
   lineinfile:
     dest: /home/{{ item.name }}/.profile
     line: 'export HISTFILE="$HOME/.sh_history"'
-  with_items: users
+  with_items: '{{ users }}'
 - name: alias vi to vim
   lineinfile:
     dest: /home/{{ item.name }}/.profile
     line: alias vi=vim
-  with_items: users
+  with_items: '{{ users }}'

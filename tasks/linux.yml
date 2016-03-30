@@ -5,4 +5,4 @@
     shell: /bin/bash
     password: '{{ item.password|default(omit) }}'
     groups: '{{ item.groups|default(omit) }}'
-  with_items: users
+  with_items: '{{ users }}'
