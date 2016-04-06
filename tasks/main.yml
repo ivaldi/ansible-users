@@ -9,5 +9,5 @@
     key: '{{ item.1 }}'
     user: '{{ item.0.name }}'
   with_subelements:
-    - users
+    - '{{ users }}'
     - ssh_keys
