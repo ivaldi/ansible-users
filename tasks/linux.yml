@@ -2,7 +2,11 @@
 - name: create system groups
   group:
     name: '{{ item }}'
-  with_items: '{{ lookup(''flattened'', users|map(attribute=''groups''))|list|unique }}'
+  with_subelements:
+    - '{{ users }}'
+    - groups
+    - flags:
+      skip_missing: true
 - name: create system users
   user:
     name: '{{ item.name }}'
