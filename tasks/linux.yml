@@ -12,5 +12,5 @@
     name: '{{ item.name }}'
     shell: /bin/bash
     password: '{{ item.password|default(omit) }}'
-    groups: '{{ item.groups|join('','')|default(omit) }}'
+    groups: '{{ item.groups|join('','') if item.groups is defined else item.groups|default(omit) }}'
   with_items: '{{ users }}'
