@@ -1,7 +1,7 @@
 ---
 - name: create system groups
   group:
-    name: '{{ item }}'
+    name: '{{ item.1 }}'
   with_subelements:
     - '{{ users }}'
     - groups
