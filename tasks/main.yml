@@ -1,8 +1,12 @@
 ---
+- name: install RedHat dependencies
+  dnf:
+    name: libselinux-python
+  when: ansible_os_family == 'RedHat'
+
 - include: linux.yml
-  when: ansible_distribution == 'Debian' or
-      ansible_distribution == 'Ubuntu' or
-      ansible_distribution == 'CentOS'
+  when: ansible_os_family == 'Debian' or
+      ansible_os_family == 'RedHat'
 - include: openbsd.yml
   when: ansible_distribution == 'OpenBSD'
 
