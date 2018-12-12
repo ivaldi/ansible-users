@@ -10,10 +10,27 @@
 - include: openbsd.yml
   when: ansible_distribution == 'OpenBSD'
 
+- name: create authorized_keys folder
+  file:
+    path: /etc/ssh/authorized_keys
+    state: directory
+  when: users_only_ansible_keys|default(false)
+
+# without using a template we'll get wrong permissions
+- name: add authorized keys
+  template:
+    dest: /etc/ssh/authorized_keys/{{ item.name }}
+    src: authorized_keys.j2
+  with_items: '{{ users }}'
+  when: users_only_ansible_keys|default(false)
+
+# FIXME remove when above is used everywhere
 - name: add authorized keys
   authorized_key:
     key: '{{ item.1 }}'
     user: '{{ item.0.name }}'
+    manage_dir: false
   with_subelements:
     - '{{ users }}'
     - ssh_keys
+  when: not users_only_ansible_keys|default(false)
