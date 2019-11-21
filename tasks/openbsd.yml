@@ -6,12 +6,6 @@
     password: '{{ item.password_bcrypt|default(''*************'') }}'
     groups: '{{ item.groups_openbsd|default(omit) }}'
   with_items: '{{ users }}'
-- name: give doas permissions to group wheel
-  lineinfile:
-    dest: /etc/doas.conf
-    line: permit :wheel
-    mode: 0640
-    create: true
 - name: set PS1 shell preference
   lineinfile:
     dest: /home/{{ item.name }}/.profile
