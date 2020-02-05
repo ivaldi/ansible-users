@@ -14,7 +14,7 @@
   file:
     path: /etc/ssh/authorized_keys
     state: directory
-  when: users_only_ansible_keys|default(false)
+  when: users_only_ansible_keys|default(true)
 
 # without using a template we'll get wrong permissions
 - name: add authorized keys
@@ -22,7 +22,7 @@
     dest: /etc/ssh/authorized_keys/{{ item.name }}
     src: authorized_keys.j2
   with_items: '{{ users }}'
-  when: users_only_ansible_keys|default(false)
+  when: users_only_ansible_keys|default(true)
 
 # FIXME remove when above is used everywhere
 - name: add authorized keys
@@ -33,4 +33,4 @@
   with_subelements:
     - '{{ users }}'
     - ssh_keys
-  when: not users_only_ansible_keys|default(false)
+  when: not users_only_ansible_keys|default(true)
