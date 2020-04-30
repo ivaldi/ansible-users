@@ -14,3 +14,15 @@
     password: '{{ item.password|default(omit) }}'
     groups: '{{ item.groups|join('','') if item.groups is defined else item.groups|default(omit) }}'
   with_items: '{{ users }}'
+- name: create systemd user directory
+  file:
+    state: directory
+    path: /home/{{ item.name }}/.config/systemd/user
+    owner: '{{ item.name }}'
+    group: '{{ item.name }}'
+  with_items: '{{ users }}'
+- name: allow unit lingering for application users
+  command: loginctl enable-linger {{ item.name }}
+  args:
+    creates: /var/lib/systemd/linger/{{ item.name }}
+  with_items: '{{ users }}'
